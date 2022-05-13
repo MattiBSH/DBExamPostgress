@@ -35,6 +35,7 @@ public class UserController {
     @Transactional()
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public String deleteUser(@RequestParam(name = "email") String email) {
+        userRepository.deleteUserByEmail(email);
         return "User deleted";
     }
 }
