@@ -42,7 +42,7 @@ public class UserController {
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public String deleteUser(@RequestParam(name = "email") String email) {
         userRepository.deleteUserByEmail(email);
-        return "Arrangement deleted";
+        return "User deleted";
     }
 
     @Autowired
@@ -53,13 +53,15 @@ public class UserController {
     public String allArrangements() {
         List<Arrangement> arrangements=arrangementRepository.findAll();
         List<ArrangementDTO> arrangementDTOs = new ArrayList<>();
-        System.out.println("hey");
         for (int i = 0; i < arrangements.size(); i++) {
+            System.out.println(arrangements.get(i).getId());
+
             List<Long> ids = new ArrayList<>();
             for (int j = 0; j < arrangements.get(i).getUsersParticipated().size(); j++) {
                 ids.add(arrangements.get(i).getUsersParticipated().get(j).getId());
             }
-            arrangementDTOs.add(new ArrangementDTO(arrangements.get(i).getName(),arrangements.get(i).getType(),ids));
+
+            arrangementDTOs.add(new ArrangementDTO(arrangements.get(i).getId(),arrangements.get(i).getName(),arrangements.get(i).getType(),ids));
         }
         return gson.toJson(arrangementDTOs);
     }
@@ -69,7 +71,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public String deleteArrangement(@RequestParam(name = "id") Long id) {
         arrangementRepository.deleteArrangementById(id);
-        return "User deleted";
+        return "Arrangement deleted";
     }
 
     @PostMapping("/arrangement")
