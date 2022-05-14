@@ -1,5 +1,6 @@
 package com.example.repositories;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByEmail(String email);
     List<User> findAll();
     Optional<User>deleteUserByEmail(String s);
+    List<User>getAllByIdIn(ArrayList<Long> userIds);
 
 
 
