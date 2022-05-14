@@ -26,11 +26,11 @@ public class ArrangementController {
     ArrangementRepository arrangementRepository;
     @Autowired
     ArrangementService arrangementService;
-    @GetMapping("/all")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @GetMapping
     public String allAccess() {
         List<Arrangement> arrangements=arrangementRepository.findAll();
         List<ArrangementDTO> arrangementDTOs = new ArrayList<>();
+        System.out.println("hey");
         for (int i = 0; i < arrangements.size(); i++) {
             List<Long> ids = new ArrayList<>();
             for (int j = 0; j < arrangements.get(i).getUsersParticipated().size(); j++) {
