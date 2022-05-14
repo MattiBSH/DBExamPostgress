@@ -24,6 +24,7 @@ public class ArrangementController {
     Gson gson = new Gson();
     @Autowired
     ArrangementRepository arrangementRepository;
+    @Autowired
     ArrangementService arrangementService;
     @GetMapping("/all")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
