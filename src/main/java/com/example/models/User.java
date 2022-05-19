@@ -1,5 +1,7 @@
 package com.example.models;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.*;
@@ -17,6 +19,7 @@ public class User {
     private String username;
     private String email;
     private String password;
+    private LocalDateTime registeredSince;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -28,6 +31,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        this.registeredSince= LocalDateTime.now();
     }
     public Long getId() {
         return id;
@@ -58,5 +62,13 @@ public class User {
     }
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public LocalDateTime getDate() {
+        return registeredSince;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.registeredSince = date;
     }
 }

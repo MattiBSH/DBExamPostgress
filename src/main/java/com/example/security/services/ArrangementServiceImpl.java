@@ -8,6 +8,7 @@ import com.example.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class ArrangementServiceImpl implements ArrangementService {
         Arrangement arrangement = new Arrangement();
         arrangement.setName(arrangementDTO.getName());
         arrangement.setType(arrangementDTO.getType());
-
+        arrangement.setDate(LocalDateTime.now());
         List<User> users=userRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getUserIds());
         arrangement.setUsersParticipated(users);
         return arrangementRepository.save(arrangement).getName();
