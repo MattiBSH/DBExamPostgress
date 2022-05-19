@@ -1,5 +1,6 @@
 package com.example.models;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,13 +20,14 @@ public class Arrangement {
     private String type;
     @ManyToMany(fetch = FetchType.LAZY)
     List<User>usersParticipated;
-
+    LocalDateTime date;
     public Arrangement() {
     }
-    public Arrangement(String username, String type,List<User>usersParticipated) {
+    public Arrangement(String username, String type,List<User>usersParticipated,LocalDateTime date) {
         this.name = username;
         this.type = type;
         this.usersParticipated=usersParticipated;
+        this.date=date;
     }
     public Long getId() {
         return id;
@@ -52,5 +54,13 @@ public class Arrangement {
 
     public void setUsersParticipated(List<User> usersParticipated) {
         this.usersParticipated = usersParticipated;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 }
