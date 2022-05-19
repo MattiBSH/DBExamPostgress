@@ -1,10 +1,12 @@
 package com.example.controllers;
 
 import com.example.facades.ForumFacade;
+import com.example.facades.RedisFacade;
 import com.example.models.Comment;
 import com.example.models.Post;
 import com.example.payload.request.LoginRequest;
 import com.example.payload.response.MessageResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.GsonBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,10 +29,17 @@ public class ForumController {
 
     @GetMapping("/post/all")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public String getAllPosts() throws UnknownHostException {
+    public String getAllPosts() throws UnknownHostException, JsonProcessingException {
         ForumFacade facade = new ForumFacade();
-        List<Post> result = facade.getAllPosts();
-        return GSON.create().toJson(result);
+        RedisFacade redisFacade = new RedisFacade();
+        List<Post> cache = redisFacade.getAllPosts();
+        if(cache.isEmpty()){
+            List<Post> result = facade.getAllPosts();
+            return GSON.create().toJson(result);
+        } else {
+            return GSON.create().toJson(cache);
+        }
+
     }
 
     @PostMapping("/post")
