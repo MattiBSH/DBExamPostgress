@@ -4,7 +4,6 @@ import com.example.dto.ArrangementDTO;
 import com.example.dto.UserDTO;
 import com.example.models.Arrangement;
 import com.example.models.User;
-import com.example.payload.request.SignupRequest;
 import com.example.repositories.ArrangementRepository;
 import com.example.repositories.UserRepository;
 import com.example.security.services.ArrangementService;
@@ -79,6 +78,17 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createArrangement(@RequestBody ArrangementDTO arrangementDTO){
         return new ResponseEntity<>(arrangementService.createArrangement(arrangementDTO), HttpStatus.CREATED);
+    }
+    @GetMapping("/allFromIds")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String getAllByID(@RequestBody ArrangementDTO arrangementDTO){
+        List<User> users=userRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getUserIds());
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            usersDTO.add(new UserDTO(users.get(i).getUsername(),users.get(i).getEmail(),users.get(i).getId()));
+        }
+        return gson.toJson(usersDTO);
     }
 }
 
