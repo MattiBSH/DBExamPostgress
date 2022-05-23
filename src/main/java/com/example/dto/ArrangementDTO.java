@@ -6,16 +6,14 @@ public class ArrangementDTO {
     long id;
     String name;
     String type;
-    List<Long> userIds;
+    List<Long> teamIds;
 
-    public ArrangementDTO(Long id,String name, String type, List<Long> userIds) {
+    public ArrangementDTO(Long id,String name, String type, List<Long> teamIds) {
         this.name = name;
         this.type = type;
-        this.userIds = userIds;
+        this.teamIds = teamIds;
         this.id=id;
     }
-
-
 
     public String getName() {
         return name;
@@ -33,12 +31,12 @@ public class ArrangementDTO {
         this.type = type;
     }
 
-    public List<Long> getUserIds() {
-        return userIds;
+    public List<Long> getTeamIds() {
+        return teamIds;
     }
 
-    public void setUserIds(List<Long> userIds) {
-        this.userIds = userIds;
+    public void setUserIds(List<Long> teamIds) {
+        this.teamIds = teamIds;
     }
 
     public long getId() {

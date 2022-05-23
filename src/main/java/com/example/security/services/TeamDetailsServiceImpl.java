@@ -1,6 +1,7 @@
 package com.example.security.services;
 
 import com.example.dto.ArrangementDTO;
+import com.example.dto.TeamDTO;
 import com.example.models.Arrangement;
 import com.example.models.Team;
 import com.example.models.User;
@@ -12,9 +13,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
-public class ArrangementServiceImpl implements ArrangementService {
+public class TeamDetailsServiceImpl implements TeamDetailsService{
 
     @Autowired
     private ArrangementRepository arrangementRepository;
@@ -22,17 +24,18 @@ public class ArrangementServiceImpl implements ArrangementService {
     private UserRepository userRepository;
     @Autowired
     private TeamRepository teamRepository;
+
     @Override
-    public String createArrangement(ArrangementDTO arrangementDTO) {
-        Arrangement arrangement = new Arrangement();
-        arrangement.setName(arrangementDTO.getName());
-        arrangement.setType(arrangementDTO.getType());
-        arrangement.setDate(LocalDateTime.now());
-        List<User> users=userRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
-        List<Team> teams=teamRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
-        arrangement.setTeamsParticipated(teams);
-        return arrangementRepository.save(arrangement).getName();
+    public String createTeam(TeamDTO teamDTO) {
+        Team team = new Team();
+        team.setName(teamDTO.getName());
+        List<User> users=  userRepository.getAllByIdIn((ArrayList<Long>) teamDTO.getUsers());
+        System.out.println(users);
+        team.setMembers((ArrayList<User>) users);
+        return teamRepository.save(team).getName();
+
     }
+
 
 
 }

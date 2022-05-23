@@ -7,28 +7,31 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Entity
-@Table(	name = "arrangement",
+@Table(	name = "arrangements",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "name"),
                 @UniqueConstraint(columnNames = "type")
         })
 public class Arrangement {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String type;
     @ManyToMany(fetch = FetchType.LAZY)
-    List<User>usersParticipated;
+    List<Team>teamsParticipated;
     LocalDateTime date;
+
     public Arrangement() {
     }
-    public Arrangement(String username, String type,List<User>usersParticipated,LocalDateTime date) {
+
+    public Arrangement(String username, String type,List<Team>teamsParticipated,LocalDateTime date) {
         this.name = username;
         this.type = type;
-        this.usersParticipated=usersParticipated;
+        this.teamsParticipated=teamsParticipated;
         this.date=date;
     }
+
     public Long getId() {
         return id;
     }
@@ -48,12 +51,12 @@ public class Arrangement {
         this.type = type;
     }
 
-    public List<User> getUsersParticipated() {
-        return usersParticipated;
+    public List<Team> getUsersParticipated() {
+        return teamsParticipated;
     }
 
-    public void setUsersParticipated(List<User> usersParticipated) {
-        this.usersParticipated = usersParticipated;
+    public void setTeamsParticipated(List<Team> teamsParticipated) {
+        this.teamsParticipated = teamsParticipated;
     }
 
     public LocalDateTime getDate() {
