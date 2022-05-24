@@ -19,7 +19,7 @@ public class User {
     private String username;
     private String email;
     private String password;
-    private LocalDateTime registeredSince;
+    private String registeredSince;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -31,7 +31,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.registeredSince= LocalDateTime.now();
+        this.registeredSince= LocalDateTime.now().toString();
     }
     public Long getId() {
         return id;
@@ -64,11 +64,11 @@ public class User {
         this.roles = roles;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return registeredSince;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.registeredSince = date;
     }
 }

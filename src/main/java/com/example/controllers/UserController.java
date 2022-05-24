@@ -57,24 +57,24 @@ public class UserController {
     @Autowired
     TeamDetailsService teamDetailsService;
 
-    /*@GetMapping("allArrangements")
+    @GetMapping("allArrangements")
     public String allArrangements() {
         List<Arrangement> arrangements=arrangementRepository.findAll();
         List<ArrangementDTO> arrangementDTOs = new ArrayList<>();
         for (int i = 0; i < arrangements.size(); i++) {
-            System.out.println(arrangements.get(i).getId());
-
             List<Long> ids = new ArrayList<>();
             for (int j = 0; j < arrangements.get(i).getTeamsParticipated().size(); j++) {
                 ids.add(arrangements.get(i).getTeamsParticipated().get(j).getId());
             }
+            Long winner=arrangements.get(i).getWinner().getId();
+            Long second=arrangements.get(i).getSecond().getId();
+            Long third=arrangements.get(i).getThird().getId();
 
-            Team winner=teamRepository.getById(arrangements.get(i).getWinner());
-
-            arrangementDTOs.add(new ArrangementDTO(arrangements.get(i).getId(),arrangements.get(i).getName(),arrangements.get(i).getType(),ids,winner,arrangements.get(i).getSecond(),arrangements.get(i).getThird()));
+            arrangementDTOs.add(new ArrangementDTO(arrangements.get(i).getId(),arrangements.get(i).getName(),arrangements.get(i).getType(),ids,winner,second,third,arrangements.get(i).getDate()));
         }
         return gson.toJson(arrangementDTOs);
-    }*/
+
+    }
 
     @DeleteMapping("/arrangement/delete")
     @Transactional()

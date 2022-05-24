@@ -17,8 +17,6 @@ import java.util.*;
 public class RandomGenerator {
     static Faker faker = new Faker();
 
-
-
     public void makeUser(UserRepository userRepository, PasswordEncoder encoder){
         User user= new User();
         Set roles = new HashSet<>();
@@ -27,7 +25,7 @@ public class RandomGenerator {
         r.setName(ERole.ROLE_USER);
         roles.add(r);
         user.setRoles(roles);
-        user.setDate(LocalDateTime.now());
+        user.setDate(LocalDateTime.now().toString());
         String name = faker.name().fullName()+faker.beer().style();
         user.setUsername(name);
         user.setEmail(name.replace(" ","")+"@gmail.com");
@@ -45,7 +43,8 @@ public class RandomGenerator {
         List<Optional<User>> userInGroup=new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Random random = new Random();
-            Long userId =random.nextLong(10, users.size());
+            //first number should be first id in user
+            Long userId =random.nextLong(1482, 1482+users.size());
             Optional<User> user=userRepository.findById(userId);
             userInGroup.add(user);
             i++;
@@ -54,6 +53,7 @@ public class RandomGenerator {
         for (Optional<User> user:
              userInGroup) {
             if(user.isPresent()){
+                System.out.println(user.get().getUsername());
                 usersGroup.add(user.get().getId());
             }
         }

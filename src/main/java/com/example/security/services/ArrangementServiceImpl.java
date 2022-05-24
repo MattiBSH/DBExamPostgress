@@ -25,12 +25,15 @@ public class ArrangementServiceImpl implements ArrangementService {
     private TeamRepository teamRepository;
     @Override
     public String createArrangement(ArrangementDTO arrangementDTO) {
+        System.out.println(arrangementDTO.getId());
+        System.out.println(arrangementDTO.getName());
         Arrangement arrangement = new Arrangement();
         arrangement.setName(arrangementDTO.getName());
         arrangement.setType(arrangementDTO.getType());
-        arrangement.setDate(LocalDateTime.now());
+        arrangement.setDate(LocalDateTime.now().toString());
+        System.out.println("getsHere");
         List<User> users=userRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
-        List<Team> teams=teamRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
+        List<Team> teams=teamRepository.getAllByIdIn(arrangementDTO.getTeamIds());
         arrangement.setTeamsParticipated(teams);
         arrangement.setWinner(teamRepository.getById(arrangementDTO.getWinner()));
         arrangement.setSecond(teamRepository.getById(arrangementDTO.getSecond()));

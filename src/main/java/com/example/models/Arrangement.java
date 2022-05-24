@@ -20,7 +20,7 @@ public class Arrangement {
     private String type;
     @ManyToMany(fetch = FetchType.LAZY)
     List<Team>teamsParticipated;
-    LocalDateTime date;
+    private String date;
     @OneToOne
     @JoinColumn(name = "winner_id")
     Team winner;
@@ -41,7 +41,7 @@ public class Arrangement {
     public Arrangement() {
     }
 
-    public Arrangement(String username, String type,List<Team>teamsParticipated,LocalDateTime date) {
+    public Arrangement(String username, String type,List<Team>teamsParticipated,String date) {
         this.name = username;
         this.type = type;
         this.teamsParticipated=teamsParticipated;
@@ -72,11 +72,11 @@ public class Arrangement {
         this.teamsParticipated = teamsParticipated;
     }
 
-    public LocalDateTime getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

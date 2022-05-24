@@ -1,5 +1,8 @@
 package com.example.dto;
 
+import com.example.models.Team;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class ArrangementDTO {
@@ -10,11 +13,44 @@ public class ArrangementDTO {
     Long winner;
     Long second;
     Long third;
-    public ArrangementDTO(Long id,String name, String type, List<Long> teamIds, Long winner, Long second, Long third) {
+    Team winnerDetailed;
+    Team secondDetailed;
+    Team thirdDetailed;
+    String dateTime;
+
+    public ArrangementDTO() {
+    }
+
+    public ArrangementDTO(Long id, String name, String type, List<Long> teamIds, Long winner, Long second, Long third, String dateTime) {
+        System.out.println(1);
         this.name = name;
         this.type = type;
         this.teamIds = teamIds;
         this.id=id;
+        this.winner=winner;
+        this.second=second;
+        this.third=third;
+        this.dateTime=dateTime;
+    }
+    public ArrangementDTO(String name, String type) {
+        System.out.println(2);
+        this.name = name;
+        this.type = type;
+    }
+    public ArrangementDTO(Long id,String name, String type,List<Long>teamIds) {
+        System.out.println("3");
+        this.id=id;
+        this.name = name;
+        this.type = type;
+        this.teamIds=teamIds;
+    }
+
+    public ArrangementDTO(Long id,String name, String type, List<Long> teamIds, Team winnerDetailed, Team secondDetailed, Team thirdDetailed) {
+        System.out.println("default");
+        this.id=id;
+        this.name = name;
+        this.type = type;
+        this.teamIds = teamIds;
         this.winner=winner;
         this.second=second;
         this.third=third;
