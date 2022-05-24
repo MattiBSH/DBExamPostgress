@@ -66,10 +66,7 @@ public class Arrangement {
     public void setType(String type) {
         this.type = type;
     }
-
-    public List<Team> getUsersParticipated() {
-        return teamsParticipated;
-    }
+    
 
     public void setTeamsParticipated(List<Team> teamsParticipated) {
         this.teamsParticipated = teamsParticipated;

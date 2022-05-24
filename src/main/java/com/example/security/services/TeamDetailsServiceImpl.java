@@ -2,6 +2,7 @@ package com.example.security.services;
 
 import com.example.dto.ArrangementDTO;
 import com.example.dto.TeamDTO;
+import com.example.facades.NeoFacade;
 import com.example.models.Arrangement;
 import com.example.models.Team;
 import com.example.models.User;
@@ -32,6 +33,8 @@ public class TeamDetailsServiceImpl implements TeamDetailsService{
         List<User> users=  userRepository.getAllByIdIn((ArrayList<Long>) teamDTO.getUsers());
         System.out.println(users);
         team.setMembers((ArrayList<User>) users);
+        NeoFacade neoFacade = new NeoFacade();
+        neoFacade.addTeam(team);
         return teamRepository.save(team).getName();
 
     }

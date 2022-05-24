@@ -49,6 +49,7 @@ public class ForumFacade {
     }
 
     public List<Post> getAllPosts(){
+        RedisFacade redisFacade = new RedisFacade();
         List<Post> posts = new ArrayList();
         MongoDatabase database = mongoClient.getDatabase("Forum").withCodecRegistry(pojoCodecRegistry);
         MongoCollection<Post> postsCol = database.getCollection("Posts", Post.class);
@@ -57,6 +58,7 @@ public class ForumFacade {
              ) {
             p.setId_String(p.getId().toHexString());
         }
+        redisFacade.addCache(posts);
         return posts;
     }
 

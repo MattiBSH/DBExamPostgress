@@ -65,8 +65,8 @@ public class UserController {
             System.out.println(arrangements.get(i).getId());
 
             List<Long> ids = new ArrayList<>();
-            for (int j = 0; j < arrangements.get(i).getUsersParticipated().size(); j++) {
-                ids.add(arrangements.get(i).getUsersParticipated().get(j).getId());
+            for (int j = 0; j < arrangements.get(i).getTeamsParticipated().size(); j++) {
+                ids.add(arrangements.get(i).getTeamsParticipated().get(j).getId());
             }
 
             Team winner=teamRepository.getById(arrangements.get(i).getWinner());
