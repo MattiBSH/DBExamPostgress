@@ -54,14 +54,43 @@ public class NeoFacade {
         startDriver("bolt://localhost:7687", "neo4j", "1234");
         try (Session session = driver.session())
         {
+            String query1 = "" +
+                    "Merge (t:Team {name:$x})" +
+                    "Merge (a:Event {name:$z, type:$b, winner:$w, second:$s, third:$e})" +
+                    "MERGE (a)-[m:PARTICIPANT {participated: $y}]-(t)";
+            String query2 = "" +
+                    "Merge (t:Team {name:$x})" +
+                    "Merge (a:Event {name:$z, type:$b, winner:$w, second:$s, third:$e})" +
+                    "MERGE (a)-[m:PARTICIPANT {participated: $y, placement:$p}]-(t)";
+
             for (Team t: a.getTeamsParticipated()
             ) {
-                session.writeTransaction(tx -> tx.run("" +
-                                "Merge (t:Team {name:$x})" +
-                                "Merge (a:Event {name:$z, type:$b})" +
-                                "MERGE (a)-[m:PARTICIPANT {participated: $y}]-(t)",
-                        parameters("x", t.getName(), "y", LocalDateTime.now(),
-                                "z", a.getName(), "b", a.getType())));
+                String query = "";
+                if(t.getId() == a.getWinner().getId()){
+                    session.writeTransaction(tx -> tx.run(query2,
+                            parameters("x", t.getName(), "y", LocalDateTime.now(),
+                                    "z", a.getName(), "b", a.getType(), "p", "Winner",
+                                    "w", a.getWinner().getId(), "s", a.getSecond().getId(),
+                                    "e", a.getThird().getId())));
+                } else if(t.getId() == a.getSecond().getId()){
+                    session.writeTransaction(tx -> tx.run(query2,
+                            parameters("x", t.getName(), "y", LocalDateTime.now(),
+                                    "z", a.getName(), "b", a.getType(), "p", "Second",
+                                    "w", a.getWinner().getId(), "s", a.getSecond().getId(),
+                                    "e", a.getThird().getId())));
+                } else if(t.getId() == a.getThird().getId()){
+                    session.writeTransaction(tx -> tx.run(query2,
+                            parameters("x", t.getName(), "y", LocalDateTime.now(),
+                                    "z", a.getName(), "b", a.getType(), "p", "Third",
+                                    "w", a.getWinner().getId(), "s", a.getSecond().getId(),
+                                    "e", a.getThird().getId())));
+                } else{
+                    session.writeTransaction(tx -> tx.run(query1,
+                            parameters("x", t.getName(), "y", LocalDateTime.now(),
+                                    "z", a.getName(), "b", a.getType(),
+                                    "w", a.getWinner().getId(), "s", a.getSecond().getId(),
+                                    "e", a.getThird().getId())));
+                }
             }
         }
         close();
