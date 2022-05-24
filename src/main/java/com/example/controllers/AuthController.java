@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.RandomGenerator;
 import com.example.facades.NeoFacade;
 import com.example.models.ERole;
 import com.example.models.Role;
@@ -11,6 +12,7 @@ import com.example.payload.response.MessageResponse;
 import com.example.repositories.RoleRepository;
 import com.example.repositories.UserRepository;
 import com.example.security.jwt.JwtUtils;
+import com.example.security.services.TeamDetailsService;
 import com.example.security.services.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,11 +40,14 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
     @Autowired
+    TeamDetailsService teamDetailsService;
+    @Autowired
     RoleRepository roleRepository;
     @Autowired
     PasswordEncoder encoder;
     @Autowired
     JwtUtils jwtUtils;
+    RandomGenerator randomGenerator =new RandomGenerator();
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -109,5 +114,17 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
+    @PostMapping("generate")
+    public void generateUsers(){
+        for (int i = 0; i < 100; i++) {
+            randomGenerator.makeUser(userRepository,encoder);
+        }
+    }
+    @PostMapping("generateTeams")
+    public void generateTeams(){
+        for (int i = 0; i < 100; i++) {
+            randomGenerator.makeTeams(userRepository,teamDetailsService);
+        }
+    }
 
 }

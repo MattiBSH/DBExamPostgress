@@ -17,6 +17,12 @@ import static org.neo4j.driver.Values.parameters;
 public class NeoFacade {
     Driver driver;
 
+    public static void main(String[] args) {
+        NeoFacade neoFacade= new NeoFacade();
+        neoFacade.getTeamWithMostWins();
+        neoFacade.getTeamWithMostSecond();
+        neoFacade.getTeamWithMostThird();
+    }
     public void startDriver(String uri, String user, String password)
     {
         driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
@@ -95,7 +101,51 @@ public class NeoFacade {
         }
         close();
     }
+    public void getTeamWithMostWins()
+    {
+        startDriver("bolt://localhost:7687", "neo4j", "1234");
+        try (Session session = driver.session())
+        {
+            String query1 = "" +
+                    "MATCH (p1:Team)-[:PARTICIPANT{placement:'Winner'}]-(p2:Event)"+
+            "WITH p1, COUNT(*) AS num ORDER BY num DESC "+
+            "RETURN num, p1.name;";
+            Result str=session.run(query1);
+            System.out.println(str.stream().toList());
 
+        }
+        close();
+    }
+    public void getTeamWithMostSecond()
+    {
+        startDriver("bolt://localhost:7687", "neo4j", "1234");
+        try (Session session = driver.session())
+        {
+            String query1 = "" +
+                    "MATCH (p1:Team)-[:PARTICIPANT{placement:'Second'}]-(p2:Event)"+
+                    "WITH p1, COUNT(*) AS num ORDER BY num DESC "+
+                    "RETURN num, p1.name;";
+            Result str=session.run(query1);
+            System.out.println(str.stream().toList());
+
+        }
+        close();
+    }
+    public void getTeamWithMostThird()
+    {
+        startDriver("bolt://localhost:7687", "neo4j", "1234");
+        try (Session session = driver.session())
+        {
+            String query1 = "" +
+                    "MATCH (p1:Team)-[:PARTICIPANT{placement:'Third'}]-(p2:Event)"+
+                    "WITH p1, COUNT(*) AS num ORDER BY num DESC "+
+                    "RETURN num, p1.name;";
+            Result str=session.run(query1);
+            System.out.println(str.stream().toList());
+
+        }
+        close();
+    }
     public void close()
     {
         // Closing a driver immediately shuts down all open connections.
