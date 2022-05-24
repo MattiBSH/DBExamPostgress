@@ -11,5 +11,5 @@ import com.example.models.User;
 public interface TeamRepository extends JpaRepository<Team, Long> {
     Optional<Team>deleteTeamById(Long id);
     List<Team>getAllByIdIn(List<Long> teamIds);
-
+    Team getById(Long id);
 }

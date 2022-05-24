@@ -7,12 +7,17 @@ public class ArrangementDTO {
     String name;
     String type;
     List<Long> teamIds;
-
-    public ArrangementDTO(Long id,String name, String type, List<Long> teamIds) {
+    Long winner;
+    Long second;
+    Long third;
+    public ArrangementDTO(Long id,String name, String type, List<Long> teamIds, Long winner, Long second, Long third) {
         this.name = name;
         this.type = type;
         this.teamIds = teamIds;
         this.id=id;
+        this.winner=winner;
+        this.second=second;
+        this.third=third;
     }
 
     public String getName() {
@@ -45,5 +50,33 @@ public class ArrangementDTO {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public void setTeamIds(List<Long> teamIds) {
+        this.teamIds = teamIds;
+    }
+
+    public Long getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Long winner) {
+        this.winner = winner;
+    }
+
+    public Long getSecond() {
+        return second;
+    }
+
+    public void setSecond(Long second) {
+        this.second = second;
+    }
+
+    public Long getThird() {
+        return third;
+    }
+
+    public void setThird(Long third) {
+        this.third = third;
     }
 }

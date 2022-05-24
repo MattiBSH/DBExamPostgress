@@ -4,8 +4,10 @@ import com.example.dto.ArrangementDTO;
 import com.example.dto.TeamDTO;
 import com.example.dto.UserDTO;
 import com.example.models.Arrangement;
+import com.example.models.Team;
 import com.example.models.User;
 import com.example.repositories.ArrangementRepository;
+import com.example.repositories.TeamRepository;
 import com.example.repositories.UserRepository;
 import com.example.security.services.ArrangementService;
 import com.example.security.services.TeamDetailsService;
@@ -49,11 +51,13 @@ public class UserController {
     @Autowired
     ArrangementRepository arrangementRepository;
     @Autowired
+    TeamRepository teamRepository;
+    @Autowired
     ArrangementService arrangementService;
     @Autowired
     TeamDetailsService teamDetailsService;
 
-    @GetMapping("allArrangements")
+    /*@GetMapping("allArrangements")
     public String allArrangements() {
         List<Arrangement> arrangements=arrangementRepository.findAll();
         List<ArrangementDTO> arrangementDTOs = new ArrayList<>();
@@ -65,10 +69,12 @@ public class UserController {
                 ids.add(arrangements.get(i).getUsersParticipated().get(j).getId());
             }
 
-            arrangementDTOs.add(new ArrangementDTO(arrangements.get(i).getId(),arrangements.get(i).getName(),arrangements.get(i).getType(),ids));
+            Team winner=teamRepository.getById(arrangements.get(i).getWinner());
+
+            arrangementDTOs.add(new ArrangementDTO(arrangements.get(i).getId(),arrangements.get(i).getName(),arrangements.get(i).getType(),ids,winner,arrangements.get(i).getSecond(),arrangements.get(i).getThird()));
         }
         return gson.toJson(arrangementDTOs);
-    }
+    }*/
 
     @DeleteMapping("/arrangement/delete")
     @Transactional()

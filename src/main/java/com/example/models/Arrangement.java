@@ -21,6 +21,22 @@ public class Arrangement {
     @ManyToMany(fetch = FetchType.LAZY)
     List<Team>teamsParticipated;
     LocalDateTime date;
+    @OneToOne
+    @JoinColumn(name = "winner_id")
+    Team winner;
+    @OneToOne
+    @JoinColumn(name = "second_id")
+    Team second;
+    @OneToOne
+    @JoinColumn(name = "third_id")
+    Team third;
+    public Team getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Team winner) {
+        this.winner = winner;
+    }
 
     public Arrangement() {
     }
@@ -65,5 +81,25 @@ public class Arrangement {
 
     public void setDate(LocalDateTime date) {
         this.date = date;
+    }
+
+    public List<Team> getTeamsParticipated() {
+        return teamsParticipated;
+    }
+
+    public Team getSecond() {
+        return second;
+    }
+
+    public void setSecond(Team second) {
+        this.second = second;
+    }
+
+    public Team getThird() {
+        return third;
+    }
+
+    public void setThird(Team third) {
+        this.third = third;
     }
 }

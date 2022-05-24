@@ -31,6 +31,9 @@ public class ArrangementServiceImpl implements ArrangementService {
         List<User> users=userRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
         List<Team> teams=teamRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
         arrangement.setTeamsParticipated(teams);
+        arrangement.setWinner(teamRepository.getById(arrangementDTO.getWinner()));
+        arrangement.setSecond(teamRepository.getById(arrangementDTO.getSecond()));
+        arrangement.setThird(teamRepository.getById(arrangementDTO.getThird()));
         return arrangementRepository.save(arrangement).getName();
     }
 
