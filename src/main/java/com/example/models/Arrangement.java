@@ -51,7 +51,7 @@ public class Arrangement {
         this.type = type;
     }
 
-    public List<Team> getUsersParticipated() {
+    public List<Team> getTeamsParticipated() {
         return teamsParticipated;
     }
 

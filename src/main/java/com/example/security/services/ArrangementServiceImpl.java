@@ -1,6 +1,7 @@
 package com.example.security.services;
 
 import com.example.dto.ArrangementDTO;
+import com.example.facades.NeoFacade;
 import com.example.models.Arrangement;
 import com.example.models.Team;
 import com.example.models.User;
@@ -31,6 +32,8 @@ public class ArrangementServiceImpl implements ArrangementService {
         List<User> users=userRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
         List<Team> teams=teamRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
         arrangement.setTeamsParticipated(teams);
+        NeoFacade neoFacade = new NeoFacade();
+        neoFacade.addEvent(arrangement);
         return arrangementRepository.save(arrangement).getName();
     }
 

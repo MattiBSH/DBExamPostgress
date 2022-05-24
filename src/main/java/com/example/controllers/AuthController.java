@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import com.example.facades.NeoFacade;
 import com.example.models.ERole;
 import com.example.models.Role;
 import com.example.models.User;
@@ -103,6 +104,8 @@ public class AuthController {
         }
         user.setRoles(roles);
         userRepository.save(user);
+        NeoFacade neoFacade = new NeoFacade();
+        neoFacade.addPerson(user.getUsername());
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
