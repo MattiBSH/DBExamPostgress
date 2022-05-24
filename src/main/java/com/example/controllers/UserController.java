@@ -1,13 +1,14 @@
 package com.example.controllers;
 
 import com.example.dto.ArrangementDTO;
+import com.example.dto.TeamDTO;
 import com.example.dto.UserDTO;
 import com.example.models.Arrangement;
 import com.example.models.User;
-import com.example.payload.request.SignupRequest;
 import com.example.repositories.ArrangementRepository;
 import com.example.repositories.UserRepository;
 import com.example.security.services.ArrangementService;
+import com.example.security.services.TeamDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,6 +50,9 @@ public class UserController {
     ArrangementRepository arrangementRepository;
     @Autowired
     ArrangementService arrangementService;
+    @Autowired
+    TeamDetailsService teamDetailsService;
+
     @GetMapping("allArrangements")
     public String allArrangements() {
         List<Arrangement> arrangements=arrangementRepository.findAll();
@@ -79,6 +83,23 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createArrangement(@RequestBody ArrangementDTO arrangementDTO){
         return new ResponseEntity<>(arrangementService.createArrangement(arrangementDTO), HttpStatus.CREATED);
+    }
+    @PostMapping("/team")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseEntity<String> createTeam(@RequestBody TeamDTO teamDTO){
+        return new ResponseEntity<>(teamDetailsService.createTeam(teamDTO), HttpStatus.CREATED);
+    }
+    @GetMapping("/allFromIds")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String getAllByID(@RequestBody ArrangementDTO arrangementDTO){
+        List<User> users=userRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
+        List<UserDTO> usersDTO = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            usersDTO.add(new UserDTO(users.get(i).getUsername(),users.get(i).getEmail(),users.get(i).getId()));
+        }
+        return gson.toJson(usersDTO);
     }
 }
 

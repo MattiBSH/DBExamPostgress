@@ -14,7 +14,5 @@ public interface ArrangementRepository extends JpaRepository<Arrangement, Long> 
     Boolean existsByName(String username);
     List<Arrangement> findAll();
     Optional<Arrangement>deleteArrangementById(Long id);
-
-
-
+    List<Arrangement> getAllByIdIn(List<Long> arrangements);
 }
