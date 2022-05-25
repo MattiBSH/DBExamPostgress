@@ -4,7 +4,6 @@ import com.example.models.Arrangement;
 import com.example.models.Team;
 import com.example.models.User;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
@@ -14,13 +13,13 @@ import org.neo4j.driver.Session;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
 
 public class NeoFacade {
     Driver driver;
+    Gson gson = new Gson();
 
     public static void main(String[] args) {
         NeoFacade neoFacade= new NeoFacade();
@@ -106,8 +105,9 @@ public class NeoFacade {
         }
         close();
     }
-    public void getTeamWithMostWins()
+    public List<String> getTeamWithMostWins()
     {
+        List<String> resJson = new ArrayList<>();
         startDriver("bolt://localhost:7687", "neo4j", "1234");
         try (Session session = driver.session())
         {
@@ -115,14 +115,20 @@ public class NeoFacade {
                     "MATCH (p1:Team)-[:PARTICIPANT{placement:'Winner'}]-(p2:Event)"+
             "WITH p1, COUNT(*) AS num ORDER BY num DESC "+
             "RETURN num, p1.name;";
-            Result str=session.run(query1);
-            System.out.println(str.stream().toList());
+            Result res = session.run(query1);
+            List<Record> list = res.stream().toList();
+            for (Record r: list
+            ) {
+                resJson.add(gson.toJson(r.asMap()));
+            }
 
         }
         close();
+        return resJson;
     }
-    public void getTeamWithMostSecond()
+    public List<String> getTeamWithMostSecond()
     {
+        List<String> resJson = new ArrayList<>();
         startDriver("bolt://localhost:7687", "neo4j", "1234");
         try (Session session = driver.session())
         {
@@ -130,14 +136,20 @@ public class NeoFacade {
                     "MATCH (p1:Team)-[:PARTICIPANT{placement:'Second'}]-(p2:Event)"+
                     "WITH p1, COUNT(*) AS num ORDER BY num DESC "+
                     "RETURN num, p1.name;";
-            Result str=session.run(query1);
-            System.out.println(str.stream().toList());
+            Result res = session.run(query1);
+            List<Record> list = res.stream().toList();
+            for (Record r: list
+            ) {
+                resJson.add(gson.toJson(r.asMap()));
+            }
 
         }
         close();
+        return resJson;
     }
-    public void getTeamWithMostThird()
+    public List<String> getTeamWithMostThird()
     {
+        List<String> resJson = new ArrayList<>();
         startDriver("bolt://localhost:7687", "neo4j", "1234");
         try (Session session = driver.session())
         {
@@ -145,15 +157,19 @@ public class NeoFacade {
                     "MATCH (p1:Team)-[:PARTICIPANT{placement:'Third'}]-(p2:Event)"+
                     "WITH p1, COUNT(*) AS num ORDER BY num DESC "+
                     "RETURN num, p1.name;";
-            Result str=session.run(query1);
-            System.out.println(str.stream().toList());
+            Result res = session.run(query1);
+            List<Record> list = res.stream().toList();
+            for (Record r: list
+            ) {
+                resJson.add(gson.toJson(r.asMap()));
+            }
 
         }
         close();
+        return resJson;
     }
     public List<String> getPersonWithMostWins()
     {
-        Gson gson = new Gson();
         List<String> resJson = new ArrayList<>();
         startDriver("bolt://localhost:7687", "neo4j", "1234");
         try (Session session = driver.session())
@@ -176,7 +192,6 @@ public class NeoFacade {
 
     public List<String> getPersonWithMostSecond()
     {
-        Gson gson = new Gson();
         List<String> resJson = new ArrayList<>();
         startDriver("bolt://localhost:7687", "neo4j", "1234");
         try (Session session = driver.session())
@@ -198,7 +213,6 @@ public class NeoFacade {
     }
     public List<String> getPersonWithMostThird()
     {
-        Gson gson = new Gson();
         List<String> resJson = new ArrayList<>();
         startDriver("bolt://localhost:7687", "neo4j", "1234");
         try (Session session = driver.session())

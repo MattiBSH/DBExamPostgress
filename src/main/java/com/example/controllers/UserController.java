@@ -133,6 +133,30 @@ public class UserController {
         List<String> result = neoFacade.getPersonWithMostThird();
         return gson.create().toJson(result);
     }
+    @GetMapping("/mostWins/Team")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getTeamMostWins(){
+        GsonBuilder gson = new GsonBuilder().setPrettyPrinting();
+        NeoFacade neoFacade = new NeoFacade();
+        List<String> result = neoFacade.getTeamWithMostWins();
+        return gson.create().toJson(result);
+    }
+    @GetMapping("/mostSecond/Team")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getTeamMostSecond(){
+        GsonBuilder gson = new GsonBuilder().setPrettyPrinting();
+        NeoFacade neoFacade = new NeoFacade();
+        List<String> result = neoFacade.getTeamWithMostSecond();
+        return gson.create().toJson(result);
+    }
+    @GetMapping("/mostThird/Team")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getTeamMostThird(){
+        GsonBuilder gson = new GsonBuilder().setPrettyPrinting();
+        NeoFacade neoFacade = new NeoFacade();
+        List<String> result = neoFacade.getTeamWithMostThird();
+        return gson.create().toJson(result);
+    }
 }
 
 
