@@ -3,6 +3,7 @@ package com.example.controllers;
 import com.example.dto.ArrangementDTO;
 import com.example.dto.TeamDTO;
 import com.example.dto.UserDTO;
+import com.example.facades.NeoFacade;
 import com.example.models.Arrangement;
 import com.example.models.Team;
 import com.example.models.User;
@@ -11,6 +12,7 @@ import com.example.repositories.TeamRepository;
 import com.example.repositories.UserRepository;
 import com.example.security.services.ArrangementService;
 import com.example.security.services.TeamDetailsService;
+import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -106,6 +108,30 @@ public class UserController {
             usersDTO.add(new UserDTO(users.get(i).getUsername(),users.get(i).getEmail(),users.get(i).getId()));
         }
         return gson.toJson(usersDTO);
+    }
+    @GetMapping("/mostWins/person")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getPersonMostWins(){
+        GsonBuilder gson = new GsonBuilder().setPrettyPrinting();
+        NeoFacade neoFacade = new NeoFacade();
+        List<String> result = neoFacade.getPersonWithMostWins();
+        return gson.create().toJson(result);
+    }
+    @GetMapping("/mostSecond/person")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getPersonMostSecond(){
+        GsonBuilder gson = new GsonBuilder().setPrettyPrinting();
+        NeoFacade neoFacade = new NeoFacade();
+        List<String> result = neoFacade.getPersonWithMostSecond();
+        return gson.create().toJson(result);
+    }
+    @GetMapping("/mostThird/person")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String getPersonMostThird(){
+        GsonBuilder gson = new GsonBuilder().setPrettyPrinting();
+        NeoFacade neoFacade = new NeoFacade();
+        List<String> result = neoFacade.getPersonWithMostThird();
+        return gson.create().toJson(result);
     }
 }
 

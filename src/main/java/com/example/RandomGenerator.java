@@ -60,6 +60,7 @@ public class RandomGenerator {
         String teamName=faker.color().name()+faker.beer().name();
         TeamDTO teamDTO= new TeamDTO(2123213L,teamName,usersGroup);
         teamDetailsService.createTeam(teamDTO);
+        NeoFacade neoFacade = new NeoFacade();
     j++;
         }
     }

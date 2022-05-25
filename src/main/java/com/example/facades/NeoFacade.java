@@ -3,14 +3,19 @@ package com.example.facades;
 import com.example.models.Arrangement;
 import com.example.models.Team;
 import com.example.models.User;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import org.neo4j.driver.AuthTokens;
 import org.neo4j.driver.Driver;
 import org.neo4j.driver.GraphDatabase;
+import org.neo4j.driver.Record;
 import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.neo4j.driver.Values.parameters;
 
@@ -19,9 +24,9 @@ public class NeoFacade {
 
     public static void main(String[] args) {
         NeoFacade neoFacade= new NeoFacade();
-        neoFacade.getTeamWithMostWins();
-        neoFacade.getTeamWithMostSecond();
-        neoFacade.getTeamWithMostThird();
+        //neoFacade.getPersonWithMostWins();
+        //neoFacade.getPersonWithMostSecond();
+        //neoFacade.getPersonWithMostThird();
     }
     public void startDriver(String uri, String user, String password)
     {
@@ -146,6 +151,74 @@ public class NeoFacade {
         }
         close();
     }
+    public List<String> getPersonWithMostWins()
+    {
+        Gson gson = new Gson();
+        List<String> resJson = new ArrayList<>();
+        startDriver("bolt://localhost:7687", "neo4j", "1234");
+        try (Session session = driver.session())
+        {
+            String query1 = "" +
+                    "MATCH (p1:Team)-[:PARTICIPANT{placement:'Winner'}]-(p2:Event)" +
+                    "MATCH (m:Person)-[h:HAS_MEMBER]-(p1)"+
+                    "WITH m, COUNT(*) AS num ORDER BY num DESC "+
+                    "RETURN num, m.name;";
+            Result res = session.run(query1);
+            List<Record> list = res.stream().toList();
+            for (Record r: list
+                 ) {
+                resJson.add(gson.toJson(r.asMap()));
+            }
+        }
+        close();
+        return resJson;
+    }
+
+    public List<String> getPersonWithMostSecond()
+    {
+        Gson gson = new Gson();
+        List<String> resJson = new ArrayList<>();
+        startDriver("bolt://localhost:7687", "neo4j", "1234");
+        try (Session session = driver.session())
+        {
+            String query1 = "" +
+                    "MATCH (p1:Team)-[:PARTICIPANT{placement:'Second'}]-(p2:Event)" +
+                    "MATCH (m:Person)-[h:HAS_MEMBER]-(p1)"+
+                    "WITH m, COUNT(*) AS num ORDER BY num DESC "+
+                    "RETURN num, m.name;";
+            Result res = session.run(query1);
+            List<Record> list = res.stream().toList();
+            for (Record r: list
+            ) {
+                resJson.add(gson.toJson(r.asMap()));
+            }
+        }
+        close();
+        return resJson;
+    }
+    public List<String> getPersonWithMostThird()
+    {
+        Gson gson = new Gson();
+        List<String> resJson = new ArrayList<>();
+        startDriver("bolt://localhost:7687", "neo4j", "1234");
+        try (Session session = driver.session())
+        {
+            String query1 = "" +
+                    "MATCH (p1:Team)-[:PARTICIPANT{placement:'Third'}]-(p2:Event)" +
+                    "MATCH (m:Person)-[h:HAS_MEMBER]-(p1)"+
+                    "WITH m, COUNT(*) AS num ORDER BY num DESC "+
+                    "RETURN num, m.name;";
+            Result res = session.run(query1);
+            List<Record> list = res.stream().toList();
+            for (Record r: list
+            ) {
+                resJson.add(gson.toJson(r.asMap()));
+            }
+        }
+        close();
+        return resJson;
+    }
+
     public void close()
     {
         // Closing a driver immediately shuts down all open connections.
