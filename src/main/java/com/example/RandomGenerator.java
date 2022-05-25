@@ -5,6 +5,7 @@ import com.example.dto.TeamDTO;
 import com.example.facades.NeoFacade;
 import com.example.models.ERole;
 import com.example.models.Role;
+import com.example.models.Team;
 import com.example.models.User;
 import com.example.repositories.UserRepository;
 import com.example.security.services.TeamDetailsService;
@@ -50,17 +51,23 @@ public class RandomGenerator {
             i++;
         }
         List<Long> usersGroup= new ArrayList<>();
-        for (Optional<User> user:
+        List<User> usersToNeo= new ArrayList<>();
+
+            for (Optional<User> user:
              userInGroup) {
             if(user.isPresent()){
                 System.out.println(user.get().getUsername());
                 usersGroup.add(user.get().getId());
+                usersToNeo.add(user.get());
+
             }
         }
         String teamName=faker.color().name()+faker.beer().name();
         TeamDTO teamDTO= new TeamDTO(2123213L,teamName,usersGroup);
         teamDetailsService.createTeam(teamDTO);
         NeoFacade neoFacade = new NeoFacade();
+        Team team = new Team(teamName, (ArrayList<User>) usersToNeo);
+        neoFacade.addTeam(team);
     j++;
         }
     }
