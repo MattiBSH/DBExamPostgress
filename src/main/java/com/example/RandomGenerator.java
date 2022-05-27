@@ -2,16 +2,15 @@ package com.example;
 
 
 import com.example.dto.TeamDTO;
+import com.example.facades.ForumFacade;
 import com.example.facades.NeoFacade;
-import com.example.models.ERole;
-import com.example.models.Role;
-import com.example.models.Team;
-import com.example.models.User;
+import com.example.models.*;
 import com.example.repositories.UserRepository;
 import com.example.security.services.TeamDetailsService;
 import com.github.javafaker.Faker;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -39,19 +38,19 @@ public class RandomGenerator {
 
     public void makeTeams(UserRepository userRepository, TeamDetailsService teamDetailsService){
         List<User> users= userRepository.findAll();
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < 30; j++) {
 
         List<Optional<User>> userInGroup=new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             Random random = new Random();
             //first number should be first id in user
-            Long userId =random.nextLong(1482, 1482+users.size());
+            Long userId =random.nextLong(493, 493+users.size());
             Optional<User> user=userRepository.findById(userId);
             userInGroup.add(user);
-            i++;
         }
         List<Long> usersGroup= new ArrayList<>();
         List<User> usersToNeo= new ArrayList<>();
+            System.out.println("userInGroup: " + userInGroup.size());
 
             for (Optional<User> user:
              userInGroup) {
@@ -62,13 +61,38 @@ public class RandomGenerator {
 
             }
         }
+            System.out.println("usersToNeo: " + usersToNeo.size());
         String teamName=faker.color().name()+faker.beer().name();
         TeamDTO teamDTO= new TeamDTO(2123213L,teamName,usersGroup);
         teamDetailsService.createTeam(teamDTO);
+            ArrayList<User>users1=new ArrayList<>();
+            for (int i = 0; i < usersToNeo.size(); i++) {
+                if(usersToNeo.contains(usersToNeo.get(i))){
+                }else{
+                    users1.add(usersToNeo.get(i));
+                }
+            }
+        Team team = new Team(teamName, users1);
+            System.out.println("users1: " + users1.size());
         NeoFacade neoFacade = new NeoFacade();
-        Team team = new Team(teamName, (ArrayList<User>) usersToNeo);
         neoFacade.addTeam(team);
-    j++;
+        }
+    }
+
+    public void generatePosts(int iterations) throws UnknownHostException {
+        ForumFacade facade = new ForumFacade();
+        for (int i = 0; i < iterations; i++) {
+            Post post = new Post();
+
+            String author = faker.name().fullName();
+            post.setAuthor(author);
+
+            String content = faker.chuckNorris().fact();
+            post.setContent(content);
+
+            post.setComments(new ArrayList<>());
+
+            facade.addPost(post);
         }
     }
 }

@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Table(	name = "arrangements",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "name"),
-                @UniqueConstraint(columnNames = "type")
         })
 public class Arrangement {
     @Id

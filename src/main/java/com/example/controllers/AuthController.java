@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -122,9 +123,13 @@ public class AuthController {
     }
     @PostMapping("generateTeams")
     public void generateTeams(){
-        for (int i = 0; i < 100; i++) {
             randomGenerator.makeTeams(userRepository,teamDetailsService);
-        }
+
+    }
+
+    @PostMapping("generatePosts")
+    public void generatePosts() throws UnknownHostException {
+        randomGenerator.generatePosts(100);
     }
 
 }
