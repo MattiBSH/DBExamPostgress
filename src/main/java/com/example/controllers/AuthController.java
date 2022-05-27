@@ -9,7 +9,9 @@ import com.example.payload.request.LoginRequest;
 import com.example.payload.request.SignupRequest;
 import com.example.payload.response.JwtResponse;
 import com.example.payload.response.MessageResponse;
+import com.example.repositories.ArrangementRepository;
 import com.example.repositories.RoleRepository;
+import com.example.repositories.TeamRepository;
 import com.example.repositories.UserRepository;
 import com.example.security.jwt.JwtUtils;
 import com.example.security.services.TeamDetailsService;
@@ -40,6 +42,10 @@ public class AuthController {
     AuthenticationManager authenticationManager;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TeamRepository teamRepository;
+    @Autowired
+    ArrangementRepository arrangementRepository;
     @Autowired
     TeamDetailsService teamDetailsService;
     @Autowired
@@ -131,5 +137,11 @@ public class AuthController {
     public void generatePosts() throws UnknownHostException {
         randomGenerator.generatePosts(100);
     }
+
+    @PostMapping("generateAll")
+    public void generateAll() throws UnknownHostException {
+        randomGenerator.generateAll(40,10,4,userRepository,encoder,teamDetailsService,teamRepository,arrangementRepository);
+    }
+
 
 }

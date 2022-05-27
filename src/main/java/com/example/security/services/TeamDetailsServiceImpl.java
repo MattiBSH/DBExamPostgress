@@ -31,7 +31,6 @@ public class TeamDetailsServiceImpl implements TeamDetailsService{
         Team team = new Team();
         team.setName(teamDTO.getName());
         List<User> users=  userRepository.getAllByIdIn((ArrayList<Long>) teamDTO.getUsers());
-        System.out.println(users);
         team.setMembers((ArrayList<User>) users);
         NeoFacade neoFacade = new NeoFacade();
         neoFacade.addTeam(team);

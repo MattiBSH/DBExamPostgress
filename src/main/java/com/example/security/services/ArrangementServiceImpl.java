@@ -17,22 +17,13 @@ import java.util.List;
 @Service
 public class ArrangementServiceImpl implements ArrangementService {
 
-    @Autowired
-    private ArrangementRepository arrangementRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private TeamRepository teamRepository;
+
     @Override
-    public String createArrangement(ArrangementDTO arrangementDTO) {
-        System.out.println(arrangementDTO.getId());
-        System.out.println(arrangementDTO.getName());
+    public String createArrangement(ArrangementDTO arrangementDTO,TeamRepository teamRepository,ArrangementRepository arrangementRepository) {
         Arrangement arrangement = new Arrangement();
         arrangement.setName(arrangementDTO.getName());
         arrangement.setType(arrangementDTO.getType());
         arrangement.setDate(LocalDateTime.now().toString());
-        System.out.println("getsHere");
-        List<User> users=userRepository.getAllByIdIn((ArrayList<Long>) arrangementDTO.getTeamIds());
         List<Team> teams=teamRepository.getAllByIdIn(arrangementDTO.getTeamIds());
         arrangement.setTeamsParticipated(teams);
         arrangement.setWinner(teamRepository.getById(arrangementDTO.getWinner()));
@@ -42,6 +33,7 @@ public class ArrangementServiceImpl implements ArrangementService {
         neoFacade.addEvent(arrangement);
         return arrangementRepository.save(arrangement).getName();
     }
+
 
 
 }

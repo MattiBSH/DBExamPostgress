@@ -90,7 +90,7 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<String> createArrangement(@RequestBody ArrangementDTO arrangementDTO){
-        return new ResponseEntity<>(arrangementService.createArrangement(arrangementDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(arrangementService.createArrangement(arrangementDTO, teamRepository, arrangementRepository), HttpStatus.CREATED);
     }
     @PostMapping("/team")
     @PreAuthorize("hasRole('ADMIN')")
