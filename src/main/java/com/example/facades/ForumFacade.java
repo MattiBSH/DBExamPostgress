@@ -67,7 +67,8 @@ public class ForumFacade {
         MongoCollection<Post> postsCol = database.getCollection("Posts", Post.class);
 
         postsCol.insertOne(post);
-
+        RedisFacade redisFacade = new RedisFacade();
+        redisFacade.addPost(post);
         return post;
     }
 

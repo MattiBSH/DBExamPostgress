@@ -140,7 +140,7 @@ public class AuthController {
 
     @PostMapping("generateAll")
     public void generateAll() throws UnknownHostException {
-        randomGenerator.generateAll(40,10,4,userRepository,encoder,teamDetailsService,teamRepository,arrangementRepository);
+        randomGenerator.generateAll(40,10,4, 50, userRepository,encoder,teamDetailsService,teamRepository,arrangementRepository);
     }
 
 

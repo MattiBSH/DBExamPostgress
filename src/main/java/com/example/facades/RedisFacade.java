@@ -50,10 +50,19 @@ public class RedisFacade {
             for (Post p : postsDB) {
                 connection.lpush("allPosts", GSON.create().toJson(p));
             }
-            connection.expire("allPosts", 3600);
+            connection.expire("allPosts", 300);
             connection.close();
             redisClient.shutdown();
             }
+
+    public void addPost(Post post) {
+        RedisClient redisClient = new RedisClient(
+                RedisURI.create("redis://127.0.0.1:6379"));
+        RedisConnection<String, String> connection = redisClient.connect();
+        connection.lpush("allPosts", GSON.create().toJson(post));
+        connection.close();
+        redisClient.shutdown();
+    }
 
 }
 

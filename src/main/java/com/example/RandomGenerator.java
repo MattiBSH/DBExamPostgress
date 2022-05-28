@@ -100,7 +100,7 @@ public class RandomGenerator {
             facade.addPost(post);
         }
     }
-    public static void generateAll(int userAmount, int teamAmount, int arrangementAmount, UserRepository userRepository, PasswordEncoder encoder, TeamDetailsService teamDetailsService, TeamRepository teamRepository, ArrangementRepository arrangementRepository){
+    public static void generateAll(int userAmount, int teamAmount, int arrangementAmount, int postAmount, UserRepository userRepository, PasswordEncoder encoder, TeamDetailsService teamDetailsService, TeamRepository teamRepository, ArrangementRepository arrangementRepository) throws UnknownHostException {
         RandomGenerator randomGenerator = new RandomGenerator();
         ArrangementServiceImpl arrangementServiceImpl = new ArrangementServiceImpl();
 
@@ -129,6 +129,7 @@ public class RandomGenerator {
 
             arrangementServiceImpl.createArrangement(new ArrangementDTO(124124124l,"Arrangement "+faker.beer().name(),"Tournament",teamsIds,winner,second,third, LocalDateTime.now().toString()),teamRepository,arrangementRepository);
         }
+        randomGenerator.generatePosts(postAmount);
     }
 
     public void createTeam(TeamDetailsService teamDetailsService,List<User>users){
